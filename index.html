@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Marko's Test Prep — Regents & SSAT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,800;1,9..144,400&family=JetBrains+Mono:wght@400;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+<!-- ==================== HOME ==================== -->
+<section id="view-home" class="view active">
+  <header class="site-header">
+    <div class="brand">
+      <div class="brand-mark">M.</div>
+      <div>
+        <div class="brand-title">Marko's Prep Desk</div>
+        <div class="brand-sub">Verified Regents Practice · Grade 9</div>
+      </div>
+    </div>
+    <nav class="top-nav">
+      <button class="nav-btn" data-view="view-history">History</button>
+      <button class="nav-btn" data-view="view-stats">Stats</button>
+    </nav>
+  </header>
+
+  <main class="home-main">
+    <div class="hero">
+      <div class="hero-eyebrow">Study Session · <span id="today-date"></span></div>
+      <h1 class="hero-title">Real questions.<br/><em>Real answers.</em></h1>
+      <p class="hero-lead">Every question on this site comes from an official, publicly released NY State Regents exam. No invented content. Every answer is the State Education Department's official key.</p>
+    </div>
+
+    <div class="streak-card" id="streak-card">
+      <div class="streak-num" id="streak-num">0</div>
+      <div class="streak-label">day streak</div>
+      <div class="streak-meta" id="streak-meta">Take a quiz today to start.</div>
+    </div>
+
+    <h2 class="section-h">Choose a test</h2>
+    <div class="test-grid" id="test-grid">
+      <!-- populated by JS -->
+    </div>
+
+    <div class="trust-note">
+      <strong>Sources.</strong> Algebra I and Living Environment questions are transcribed from the actual exams published at <a href="https://www.nysedregents.org" target="_blank" rel="noopener">nysedregents.org</a> with the State Education Department's official scoring keys. Each question shows its exact source (date and question number) so you can verify against the original PDF.
+    </div>
+  </main>
+</section>
+
+<!-- ==================== TEST DETAIL ==================== -->
+<section id="view-test" class="view">
+  <header class="sub-header">
+    <button class="back-btn" data-view="view-home">← Home</button>
+    <h2 id="test-detail-title"></h2>
+  </header>
+  <main class="detail-main">
+    <p class="test-detail-desc" id="test-detail-desc"></p>
+    <div class="source-banner" id="source-banner"></div>
+
+    <div class="mode-row" id="mode-row">
+      <div class="mode-card" data-mode="full">
+        <div class="mode-num">01</div>
+        <h3>Full Practice Test</h3>
+        <p>All available questions in one session. Timed.</p>
+        <span class="mode-meta" id="mode-meta-full"></span>
+      </div>
+      <div class="mode-card" data-mode="drill">
+        <div class="mode-num">02</div>
+        <h3>Topic Drill</h3>
+        <p>Target one section. Build skill in one area.</p>
+        <span class="mode-meta">Pick a topic ↓</span>
+      </div>
+      <div class="mode-card" data-mode="quick">
+        <div class="mode-num">03</div>
+        <h3>Quick 10</h3>
+        <p>Ten random questions. Five-minute warm-up.</p>
+        <span class="mode-meta">~5 min</span>
+      </div>
+    </div>
+
+    <!-- Info-only view for SSAT -->
+    <div id="info-only-block" class="hidden">
+      <div class="info-card">
+        <h3>Why no SSAT questions on this site?</h3>
+        <p>The SSAT is a private test owned by the Enrollment Management Association (EMA). Unlike the NY Regents — which the State Education Department publishes for free — official SSAT questions are copyrighted and require a paid subscription or guidebook.</p>
+        <p>Rather than show you AI-generated questions that might be wrong or different in style from the real test, here are the official sources we recommend instead:</p>
+        <h4>Official prep (use these for SSAT):</h4>
+        <ul class="link-list">
+          <li><a href="https://www.ssat.org/prepare/practice" target="_blank" rel="noopener">SSAT Official Online Practice</a> — 4 full-length tests + 1,000+ questions ($80/yr from EMA)</li>
+          <li><a href="https://www.ssat.org/prepare/practice" target="_blank" rel="noopener">Official SSAT Guide Books (Upper Level)</a> — printed practice tests from EMA</li>
+          <li><a href="https://www.ssat.org" target="_blank" rel="noopener">Free Mini Practice Test</a> — diagnostic from the official site</li>
+        </ul>
+        <h4>Free supplementary resources:</h4>
+        <ul class="link-list">
+          <li><a href="https://www.khanacademy.org" target="_blank" rel="noopener">Khan Academy</a> — vocabulary, math, reading skills (free)</li>
+          <li>Hotchkiss school's library — ask your teacher for the Bearcats' SSAT prep recommendations</li>
+        </ul>
+      </div>
+    </div>
+
+    <div id="topics-row" class="topics-row hidden">
+      <h3 class="topics-h">Topics</h3>
+      <div class="topics-grid" id="topics-grid"></div>
+    </div>
+  </main>
+</section>
+
+<!-- ==================== QUIZ ==================== -->
+<section id="view-quiz" class="view">
+  <header class="quiz-header">
+    <div class="quiz-meta">
+      <div class="quiz-test-name" id="quiz-test-name"></div>
+      <div class="quiz-progress" id="quiz-progress">1 / 10</div>
+    </div>
+    <div class="quiz-timer" id="quiz-timer">00:00</div>
+    <button class="quit-btn" id="quit-btn">Quit</button>
+  </header>
+
+  <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+
+  <main class="quiz-main">
+    <div class="q-topic" id="q-topic"></div>
+    <div class="q-text" id="q-text"></div>
+    <div class="q-passage" id="q-passage"></div>
+    <div class="q-choices" id="q-choices"></div>
+    <div class="q-source" id="q-source"></div>
+    <button class="flag-btn" id="flag-btn">⚑ Report this question</button>
+  </main>
+
+  <footer class="quiz-footer">
+    <button class="ghost-btn" id="prev-btn">← Previous</button>
+    <button class="primary-btn" id="next-btn">Next →</button>
+    <button class="primary-btn submit-btn hidden" id="submit-btn">Submit Test</button>
+  </footer>
+</section>
+
+<!-- ==================== RESULTS ==================== -->
+<section id="view-results" class="view">
+  <header class="sub-header">
+    <button class="back-btn" data-view="view-home">← Home</button>
+    <h2>Results</h2>
+  </header>
+  <main class="results-main">
+    <div class="score-card">
+      <div class="score-grade" id="score-grade">—</div>
+      <div class="score-pct" id="score-pct">0%</div>
+      <div class="score-fraction" id="score-fraction">0 / 0</div>
+      <div class="score-time" id="score-time">Time: 0:00</div>
+    </div>
+
+    <div class="topic-breakdown" id="topic-breakdown"></div>
+
+    <h3 class="section-h">Question Review</h3>
+    <div class="review-list" id="review-list"></div>
+
+    <div class="results-actions">
+      <button class="primary-btn" id="retry-btn">Retry</button>
+      <button class="ghost-btn" data-view="view-home">Back to Home</button>
+    </div>
+  </main>
+</section>
+
+<!-- ==================== HISTORY ==================== -->
+<section id="view-history" class="view">
+  <header class="sub-header">
+    <button class="back-btn" data-view="view-home">← Home</button>
+    <h2>Test History</h2>
+  </header>
+  <main class="detail-main">
+    <div id="history-list" class="history-list"></div>
+  </main>
+</section>
+
+<!-- ==================== STATS ==================== -->
+<section id="view-stats" class="view">
+  <header class="sub-header">
+    <button class="back-btn" data-view="view-home">← Home</button>
+    <h2>Stats & Progress</h2>
+  </header>
+  <main class="detail-main">
+    <div id="stats-content" class="stats-content"></div>
+    <div id="flagged-section" class="weak-section hidden" style="margin-top:32px;">
+      <h3 class="weak-h">⚑ Questions you flagged</h3>
+      <div id="flagged-list"></div>
+      <button class="ghost-btn" id="clear-flags-btn" style="margin-top:16px;">Clear all flags</button>
+    </div>
+  </main>
+</section>
+
+<script src="data/questions.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
